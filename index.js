@@ -1,5 +1,5 @@
 window.onload = function () {
-   document.body.insertAdjacentHTML('afterbegin', '<div class="wrapper">\
+  document.body.insertAdjacentHTML('afterbegin', '<div class="wrapper">\
    <textarea rows="5" id="area" class="area" ></textarea><div class="keyboard">\
    <div class="row">\
    <div class="key"><span class="rus"><span class="down hidden">ё</span><span class="up hidden">Ё</span></span>\
@@ -152,65 +152,68 @@ window.onload = function () {
   let rusDown = true;
   let engDown = true;
   let keyDown = false;
-  
   eng = localStorage.getItem('eng');
-  if (eng == 'false') {
-    engKeyDown.forEach(i => i.classList.add('hidden'));
-    rusKeyDown.forEach(i => i.classList.remove('hidden'));
+  if (eng === 'false') {
+    engKeyDown.forEach((i) => i.classList.add('hidden'));
+    rusKeyDown.forEach((i) => i.classList.remove('hidden'));
     eng = false;
   }
 
   window.onkeydown = keyHandler;
-  keys.forEach(i => i.addEventListener('mousedown', mouseHandler)); 
-  keys.forEach(i => i.addEventListener('mouseup', mouseUp)); 
-  window.addEventListener('keyup', () => keys.forEach(i => {
-    
+  keys.forEach((i) => i.addEventListener('mousedown', mouseHandler));
+  keys.forEach((i) => i.addEventListener('mouseup', mouseUp));
+  window.addEventListener('keyup', () => keys.forEach((i) => {
     if (i.id !== 'capslock') {
       keyDown = false;
       i.classList.remove('active');
-    }        
+    }
   }));
-  
+
   function mouseUp() {
-    if (this.id == 'capslock') return;
+    if (this.id === 'capslock') return;
     this.classList.remove('active');
   }
 
   function mouseHandler() {
-    keys.forEach(i => i.addEventListener('mouseup', mouseUp)); 
-    
-    let pos = area.selectionStart;
+    keys.forEach((i) => i.addEventListener('mouseup', mouseUp));
+
+    const pos = area.selectionStart;
     if (this.id !== 'capslock') {
       this.classList.add('active');
     }
-    
+
     if (this.id === 'enter') {
-      area.value = area.value.slice(0, pos) + '\n' + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos + 1;
+      area.value = `${area.value.slice(0, pos)}\n${area.value.slice(pos)}`;
+      area.selectionStart = pos + 1;
+      area.selectionEnd = pos + 1;
       return;
     }
 
     if (this.id === 'backspace') {
-      area.value = area.value.slice(0, pos-1) + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos - 1;
+      area.value = area.value.slice(0, pos - 1) + area.value.slice(pos);
+      area.selectionStart = pos - 1;
+      area.selectionEnd = pos - 1;
       return;
     }
 
     if (this.id === 'delete') {
       area.value = area.value.slice(0, pos) + area.value.slice(pos + 1);
-      area.selectionStart = area.selectionEnd = pos;
+      area.selectionStart = pos;
+      area.selectionEnd = pos;
       return;
     }
 
     if (this.id === 'tab') {
-      area.value = area.value.slice(0, pos) + '  ' + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos + 2;
+      area.value = `${area.value.slice(0, pos)}  ${area.value.slice(pos)}`;
+      area.selectionStart = pos + 2;
+      area.selectionEnd = pos + 2;
       return;
     }
 
     if (this.id === 'space') {
-      area.value = area.value.slice(0, pos) + ' ' + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos + 1;
+      area.value = `${area.value.slice(0, pos)} ${area.value.slice(pos)}`;
+      area.selectionStart = pos + 1;
+      area.selectionEnd = pos + 1;
       return;
     }
 
@@ -220,98 +223,101 @@ window.onload = function () {
       return;
     }
 
-    if (this.id === 'metaleft' || this.id === 'controlleft' || this.id === 'altleft' ||
-        this.id === 'altright' || this.id === 'controlright' || this.id === 'shiftright' || this.id === 'shiftleft') {
+    if (this.id === 'metaleft' || this.id === 'controlleft' || this.id === 'altleft'
+      || this.id === 'altright' || this.id === 'controlright' || this.id === 'shiftright' || this.id === 'shiftleft') {
       return;
     }
-        
-    for (let node of this.children) {
-      for (let elem of node.children) {
+
+    for (const node of this.children) {
+      for (const elem of node.children) {
         if (!elem.classList.contains('hidden')) {
           area.value += elem.textContent;
         }
       }
     }
-    
   }
 
   function keyHandler(e) {
-
     e.preventDefault();
     area.focus();
-    let pos = area.selectionStart;
+    const pos = area.selectionStart;
     elem = document.getElementById(`${e.code.toLowerCase()}`);
     if (keyDown && !e.altKey && !e.ctrlKey) return;
     keyDown = true;
-    
+
     if (e.altKey && e.ctrlKey) {
       if (eng && engDown) {
-        engKeyDown.forEach(i => i.classList.add('hidden'));
-        rusKeyDown.forEach(i => i.classList.remove('hidden'));
+        engKeyDown.forEach((i) => i.classList.add('hidden'));
+        rusKeyDown.forEach((i) => i.classList.remove('hidden'));
         eng = false;
       } else if (eng && !engDown) {
-        engKeyUp.forEach(i => i.classList.add('hidden'));
-        rusKeyUp.forEach(i => i.classList.remove('hidden'));
+        engKeyUp.forEach((i) => i.classList.add('hidden'));
+        rusKeyUp.forEach((i) => i.classList.remove('hidden'));
         eng = false; rusDown = false; engDown = true;
       } else if (!eng && rusDown) {
-        engKeyDown.forEach(i => i.classList.remove('hidden'));
-        rusKeyDown.forEach(i => i.classList.add('hidden'));
+        engKeyDown.forEach((i) => i.classList.remove('hidden'));
+        rusKeyDown.forEach((i) => i.classList.add('hidden'));
         eng = true;
       } else if (!eng && !rusDown) {
-        engKeyUp.forEach(i => i.classList.remove('hidden'));
-        rusKeyUp.forEach(i => i.classList.add('hidden'));
+        engKeyUp.forEach((i) => i.classList.remove('hidden'));
+        rusKeyUp.forEach((i) => i.classList.add('hidden'));
         eng = true; rusDown = true; engDown = false;
-      }        
+      }
     }
-    
+
     localStorage.setItem('eng', eng);
-      
+
     if (e.code === 'Tab') {
       e.preventDefault();
-      area.value = area.value.slice(0, pos) + '  ' + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos + 2;
+      area.value = `${area.value.slice(0, pos)}  ${area.value.slice(pos)}`;
+      area.selectionStart = pos + 2;
+      area.selectionEnd = pos + 2;
       elem.classList.add('active');
-      return;      
+      return;
     }
 
     if (e.code === 'Space') {
-      area.value = area.value.slice(0, pos) + ' ' + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos + 1;
+      area.value = `${area.value.slice(0, pos)} ${area.value.slice(pos)}`;
+      area.selectionStart = pos + 1;
+      area.selectionEnd = pos + 1;
       elem.classList.add('active');
       return;
     }
 
     if (e.code === 'Delete') {
       area.value = area.value.slice(0, pos) + area.value.slice(pos + 1);
-      area.selectionStart = area.selectionEnd = pos;
+      area.selectionStart = pos;
+      area.selectionEnd = pos;
       elem.classList.add('active');
       return;
     }
 
     if (e.code === 'Enter') {
-      area.value = area.value.slice(0, pos) + '\n' + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos + 1;
+      area.value = `${area.value.slice(0, pos)}\n${area.value.slice(pos)}`;
+      area.selectionStart = pos + 1;
+      area.selectionEnd = pos + 1;
       elem.classList.add('active');
       return;
     }
 
     if (e.code === 'Backspace') {
-      area.value = area.value.slice(0, pos-1) + area.value.slice(pos);
-      area.selectionStart = area.selectionEnd = pos - 1;
+      area.value = area.value.slice(0, pos - 1) + area.value.slice(pos);
+      area.selectionStart = pos - 1;
+      area.selectionEnd = pos - 1;
       elem.classList.add('active');
       return;
     }
 
-    if (e.code === 'MetaLeft' || e.code === 'ControlLeft' || e.code === 'ControlRight' || 
-      e.code === 'AltLeft' || e.code === 'AltRight' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+    if (e.code === 'MetaLeft' || e.code === 'ControlLeft' || e.code === 'ControlRight'
+      || e.code === 'AltLeft' || e.code === 'AltRight' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
       elem.classList.add('active');
       return;
     }
 
     if (e.code === 'ArrowRight' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowUp') {
       elem.classList.add('active');
-      for (let node of elem.children) {
-        for (let item of node.children) {
+      for (const node of elem.children) {
+        for (const item of node.children) {
           if (!item.classList.contains('hidden')) {
             area.value += item.textContent;
           }
@@ -326,23 +332,23 @@ window.onload = function () {
       return;
     }
 
-    function findNode() {      
+    function findNode() {
       for (const node of engKeyDown) {
-        if (node.textContent === e.key ) return node;                 
-      } 
+        if (node.textContent === e.key) return node;
+      }
       for (const node of engKeyUp) {
-        if (node.textContent === e.key) return node;                 
-      }  
+        if (node.textContent === e.key) return node;
+      }
       for (const node of rusKeyDown) {
-        if (node.textContent === e.key) return node;                 
-      }  
+        if (node.textContent === e.key) return node;
+      }
       for (const node of rusKeyUp) {
-        if (node.textContent === e.key) return node;                 
-      }    
-    }   
+        if (node.textContent === e.key) return node;
+      }
+    }
     elem = findNode().parentElement.parentElement;
     elem.classList.add('active');
-    
+
     for (const node of elem.children) {
       for (const item of node.children) {
         if (!item.classList.contains('hidden')) {
@@ -354,23 +360,21 @@ window.onload = function () {
 
   function changeLetters() {
     if (eng && engDown) {
-      engKeyDown.forEach(i => i.classList.add('hidden'));
-      engKeyUp.forEach(i => i.classList.remove('hidden')); 
-      engDown = false;     
+      engKeyDown.forEach((i) => i.classList.add('hidden'));
+      engKeyUp.forEach((i) => i.classList.remove('hidden'));
+      engDown = false;
     } else if (eng && !engDown) {
-      engKeyDown.forEach(i => i.classList.remove('hidden'));
-      engKeyUp.forEach(i => i.classList.add('hidden')); 
-      engDown = true;     
+      engKeyDown.forEach((i) => i.classList.remove('hidden'));
+      engKeyUp.forEach((i) => i.classList.add('hidden'));
+      engDown = true;
     } else if (!eng && rusDown) {
-      rusKeyDown.forEach(i => i.classList.add('hidden'));
-      rusKeyUp.forEach(i => i.classList.remove('hidden')); 
-      rusDown = false;     
+      rusKeyDown.forEach((i) => i.classList.add('hidden'));
+      rusKeyUp.forEach((i) => i.classList.remove('hidden'));
+      rusDown = false;
     } else if (!eng && !rusDown) {
-      rusKeyDown.forEach(i => i.classList.remove('hidden'));
-      rusKeyUp.forEach(i => i.classList.add('hidden')); 
-      rusDown = true;     
-    } 
+      rusKeyDown.forEach((i) => i.classList.remove('hidden'));
+      rusKeyUp.forEach((i) => i.classList.add('hidden'));
+      rusDown = true;
+    }
   }
-  
-  
-}
+};
